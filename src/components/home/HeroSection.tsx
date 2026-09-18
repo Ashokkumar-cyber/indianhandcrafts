@@ -130,13 +130,13 @@ export default function HeroSection({ onOpenProductModal, onOpenKala }: HeroSect
 
           </div>
 
-          {/* RIGHT: Live Pooja Flower Shower Stage (5 cols) */}
+          {/* RIGHT: Featured Heritage Showcase (5 cols) */}
           <div className="lg:col-span-5 relative flex justify-center">
             
             {/* Ambient Backlight Halo */}
             <div className="absolute inset-0 m-auto w-80 h-80 rounded-full bg-gradient-to-tr from-[#C4683C]/25 via-[#D4AF37]/20 to-transparent blur-3xl pointer-events-none" />
 
-            {/* Interactive Pooja Flower Shower Component */}
+            {/* Featured Heritage Product Showcase */}
             <PoojaFlowerShowcase
               product={featuredBalaji}
               onInspect={() => onOpenProductModal && onOpenProductModal(featuredBalaji)}
