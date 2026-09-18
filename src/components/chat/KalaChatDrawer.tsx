@@ -265,7 +265,7 @@ export default function KalaChatDrawer({ isOpen, onClose, onOpenProductModal }: 
       {/* 1. Header: Filigree Brass Bar */}
       <div className="bg-gradient-to-r from-[#1C1916] via-[#2A241E] to-[#1C1916] border-b border-[#D4AF37]/30 p-3.5 px-4 flex items-center justify-between shadow-md">
         <div className="flex items-center gap-2.5">
-          <div className="relative w-9 h-9 rounded-full bg-gradient-to-br from-[#D4AF37] via-[#F3D874] to-[#C4683C] p-0.5 shadow-sm overflow-hidden flex items-center justify-center">
+          <div className="relative w-9 h-9 rounded-full overflow-hidden flex-shrink-0 shadow-sm">
             <div className="relative w-full h-full rounded-full overflow-hidden bg-[#0B0A09]">
               <Image
                 src="/images/nataraja_logo.jpg"

@@ -4,16 +4,16 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { STORE_DETAILS } from "@/lib/data/products";
-import { 
-  Phone, 
-  MapPin, 
-  Star, 
-  Clock, 
-  MessageCircle, 
-  Search, 
-  Menu, 
-  X, 
-  ShieldCheck, 
+import {
+  Phone,
+  MapPin,
+  Star,
+  Clock,
+  MessageCircle,
+  Search,
+  Menu,
+  X,
+  ShieldCheck,
   Sparkles,
   Gift
 } from "lucide-react";
@@ -83,7 +83,8 @@ export default function Navbar({ onOpenKala, onSearchChange, onCategorySelect }:
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           {/* Brand Logo with Nataraja Idol Emblem */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-11 h-11 rounded-full bg-gradient-to-br from-[#D4AF37] via-[#F3D874] to-[#C4683C] p-0.5 shadow-metallic-glow flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300">
+            {/* Clean, Premium Borderless Logo */}
+            <div className="relative w-11 h-11 rounded-full overflow-hidden flex-shrink-0 group-hover:scale-105 transition-transform duration-300 shadow-sm">
               <div className="relative w-full h-full rounded-full overflow-hidden bg-[#090807]">
                 <Image
                   src="/images/nataraja_logo.jpg"
@@ -129,27 +130,27 @@ export default function Navbar({ onOpenKala, onSearchChange, onCategorySelect }:
 
           {/* Nav Links (Desktop) */}
           <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-            <a 
-              href="#catalog-section" 
+            <a
+              href="#catalog-section"
               className="text-text-stone hover:text-[#D4AF37] transition-colors"
             >
               Master Catalog
             </a>
-            <a 
-              href="#gifting-calculator" 
+            <a
+              href="#gifting-calculator"
               className="flex items-center gap-1.5 text-accent-copper hover:text-orange-400 transition-colors"
             >
               <Gift className="w-4 h-4" />
               Return-Gift Calc
             </a>
-            <a 
-              href="#artisan-policy" 
+            <a
+              href="#artisan-policy"
               className="text-text-stone hover:text-[#D4AF37] transition-colors"
             >
               Showroom Notice
             </a>
-            <a 
-              href="#store-showroom" 
+            <a
+              href="#store-showroom"
               className="text-text-stone hover:text-[#D4AF37] transition-colors"
             >
               Visit Showroom

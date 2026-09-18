@@ -26,7 +26,7 @@ export default function Footer() {
           {/* Col 1: Brand & Kakinada Identity (4 cols) */}
           <div className="lg:col-span-4 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="relative w-11 h-11 rounded-full bg-gradient-to-br from-[#D4AF37] via-[#F3D874] to-[#C4683C] p-0.5 shadow-md flex items-center justify-center overflow-hidden">
+              <div className="relative w-11 h-11 rounded-full overflow-hidden flex-shrink-0 shadow-sm">
                 <div className="relative w-full h-full rounded-full overflow-hidden bg-[#090807]">
                   <Image
                     src="/images/nataraja_logo.jpg"
