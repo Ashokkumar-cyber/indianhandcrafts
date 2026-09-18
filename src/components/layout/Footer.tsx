@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { STORE_DETAILS } from "@/lib/data/products";
 import { 
   MapPin, 
@@ -25,9 +26,15 @@ export default function Footer() {
           {/* Col 1: Brand & Kakinada Identity (4 cols) */}
           <div className="lg:col-span-4 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#D4AF37] via-[#C4683C] to-[#8A1C14] p-0.5 flex items-center justify-center">
-                <div className="w-full h-full bg-[#0F0E0D] rounded-[9px] flex items-center justify-center">
-                  <span className="text-[#D4AF37] font-serif font-black text-sm">క</span>
+              <div className="relative w-11 h-11 rounded-full bg-gradient-to-br from-[#D4AF37] via-[#F3D874] to-[#C4683C] p-0.5 shadow-md flex items-center justify-center overflow-hidden">
+                <div className="relative w-full h-full rounded-full overflow-hidden bg-[#090807]">
+                  <Image
+                    src="/images/nataraja_logo.jpg"
+                    alt="Lord Nataraja Emblem Logo"
+                    fill
+                    sizes="44px"
+                    className="object-cover object-center scale-110"
+                  />
                 </div>
               </div>
               <div>

@@ -39,6 +39,11 @@ export const metadata: Metadata = {
     locale: "en_IN",
     type: "website",
   },
+  icons: {
+    icon: "/images/nataraja_logo.jpg",
+    shortcut: "/images/nataraja_logo.jpg",
+    apple: "/images/nataraja_logo.jpg",
+  },
 };
 
 export default function RootLayout({

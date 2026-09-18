@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { STORE_DETAILS } from "@/lib/data/products";
 import { 
   Phone, 
@@ -80,11 +81,18 @@ export default function Navbar({ onOpenKala, onSearchChange, onCategorySelect }:
       {/* 2. Main Navigation Bar */}
       <nav className="bg-[#0F0E0D]/95 backdrop-blur-md border-b border-[#2E2924] px-4 py-3">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-          {/* Brand Logo with Telugu Identity */}
+          {/* Brand Logo with Nataraja Idol Emblem */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#D4AF37] via-[#C4683C] to-[#8A1C14] p-0.5 shadow-metallic-glow flex items-center justify-center">
-              <div className="w-full h-full bg-[#0F0E0D] rounded-[10px] flex items-center justify-center">
-                <span className="text-[#D4AF37] font-serif font-black text-lg">క</span>
+            <div className="relative w-11 h-11 rounded-full bg-gradient-to-br from-[#D4AF37] via-[#F3D874] to-[#C4683C] p-0.5 shadow-metallic-glow flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-300">
+              <div className="relative w-full h-full rounded-full overflow-hidden bg-[#090807]">
+                <Image
+                  src="/images/nataraja_logo.jpg"
+                  alt="Lord Nataraja Idol Emblem Logo"
+                  fill
+                  sizes="44px"
+                  className="object-cover object-center scale-110 group-hover:scale-125 transition-transform duration-500"
+                  priority
+                />
               </div>
             </div>
             <div className="flex flex-col">
