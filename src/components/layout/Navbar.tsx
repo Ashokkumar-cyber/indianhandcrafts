@@ -4,18 +4,15 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { STORE_DETAILS } from "@/lib/data/products";
-import {
-  Phone,
-  MapPin,
-  Star,
-  Clock,
-  MessageCircle,
-  Search,
-  Menu,
-  X,
-  ShieldCheck,
+import { 
+  Star, 
+  MessageCircle, 
+  Menu, 
+  X, 
+  ShieldCheck, 
   Sparkles,
-  Gift
+  Gift,
+  MapPin
 } from "lucide-react";
 
 interface NavbarProps {
@@ -24,21 +21,8 @@ interface NavbarProps {
   onCategorySelect?: (catId: string) => void;
 }
 
-export default function Navbar({ onOpenKala, onSearchChange, onCategorySelect }: NavbarProps) {
+export default function Navbar({ onOpenKala, onCategorySelect }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (onSearchChange) {
-      onSearchChange(searchTerm);
-    }
-    const catalogEl = document.getElementById("catalog-section");
-    if (catalogEl) {
-      catalogEl.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
   return (
     <header className="sticky top-0 z-40 w-full transition-all">
@@ -88,7 +72,7 @@ export default function Navbar({ onOpenKala, onSearchChange, onCategorySelect }:
               <div className="relative w-full h-full rounded-full overflow-hidden bg-[#090807]">
                 <Image
                   src="/images/nataraja_logo.jpg"
-                  alt="Lord Nataraja Idol Emblem Logo"
+                  alt="Lord Nataraja Idol"
                   fill
                   sizes="44px"
                   className="object-cover object-center scale-110 group-hover:scale-125 transition-transform duration-500"
@@ -111,46 +95,29 @@ export default function Navbar({ onOpenKala, onSearchChange, onCategorySelect }:
             </div>
           </Link>
 
-          {/* Search Bar (Desktop) */}
-          <div className="hidden lg:flex flex-1 max-w-md mx-6">
-            <form onSubmit={handleSearchSubmit} className="relative w-full">
-              <input
-                type="text"
-                placeholder="Search brass Balaji, Kondapalli, return gifts..."
-                value={searchTerm}
-                onChange={(e) => {
-                  setSearchTerm(e.target.value);
-                  if (onSearchChange) onSearchChange(e.target.value);
-                }}
-                className="w-full bg-[#1A1816] border border-[#2E2924] rounded-full py-2 pl-10 pr-4 text-xs text-text-parchment placeholder-text-muted focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all"
-              />
-              <Search className="w-4 h-4 text-text-muted absolute left-3.5 top-2.5" />
-            </form>
-          </div>
-
           {/* Nav Links (Desktop) */}
-          <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-            <a
-              href="#catalog-section"
+          <div className="hidden md:flex items-center gap-7 text-sm font-medium">
+            <a 
+              href="#catalog-section" 
               className="text-text-stone hover:text-[#D4AF37] transition-colors"
             >
               Master Catalog
             </a>
-            <a
-              href="#gifting-calculator"
+            <a 
+              href="#gifting-calculator" 
               className="flex items-center gap-1.5 text-accent-copper hover:text-orange-400 transition-colors"
             >
               <Gift className="w-4 h-4" />
               Return-Gift Calc
             </a>
-            <a
-              href="#artisan-policy"
+            <a 
+              href="#artisan-policy" 
               className="text-text-stone hover:text-[#D4AF37] transition-colors"
             >
               Showroom Notice
             </a>
-            <a
-              href="#store-showroom"
+            <a 
+              href="#store-showroom" 
               className="text-text-stone hover:text-[#D4AF37] transition-colors"
             >
               Visit Showroom
@@ -196,21 +163,6 @@ export default function Navbar({ onOpenKala, onSearchChange, onCategorySelect }:
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
           <div className="md:hidden mt-3 pt-3 border-t border-[#2E2924] flex flex-col gap-3">
-            {/* Mobile Search */}
-            <form onSubmit={handleSearchSubmit} className="relative w-full mb-1">
-              <input
-                type="text"
-                placeholder="Search brass, Kondapalli, return gifts..."
-                value={searchTerm}
-                onChange={(e) => {
-                  setSearchTerm(e.target.value);
-                  if (onSearchChange) onSearchChange(e.target.value);
-                }}
-                className="w-full bg-[#1A1816] border border-[#2E2924] rounded-lg py-2 pl-9 pr-3 text-xs text-text-parchment placeholder-text-muted focus:outline-none focus:border-[#D4AF37]"
-              />
-              <Search className="w-4 h-4 text-text-muted absolute left-3 top-2.5" />
-            </form>
-
             <a
               href="#catalog-section"
               onClick={() => setMobileMenuOpen(false)}
