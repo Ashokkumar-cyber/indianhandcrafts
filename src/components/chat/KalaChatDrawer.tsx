@@ -163,9 +163,44 @@ export default function KalaChatDrawer({ isOpen, onClose, onOpenProductModal }: 
     setIsTyping(true);
 
     try {
-      const result = await processUserQuery(textToSend);
+      // Primary: Call the RAG Gemini API endpoint
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: textToSend,
+          history: messages.slice(-4).map(m => ({
+            role: m.sender === "kala" ? "model" : "user",
+            text: m.text
+          }))
+        })
+      });
 
-      setTimeout(() => {
+      if (response.ok) {
+        const data = await response.json();
+        setIsTyping(false);
+
+        const botMsg: Message = {
+          id: `kala-${Date.now()}`,
+          sender: "kala",
+          text: data.reply || "Namaste! How may I assist you with our handcrafted treasures today?",
+          teluguText: data.replyTelugu,
+          products: data.products || [],
+          timestamp: "Just now"
+        };
+        setMessages(prev => [...prev, botMsg]);
+
+        if (data.isLeadQualified) {
+          setLeadFormState(prev => ({ ...prev, show: true }));
+        }
+        return;
+      }
+      throw new Error("Chat API returned status " + response.status);
+    } catch (err) {
+      console.warn("API Chat unavailable, falling back to local client processor:", err);
+      // Fallback: Client-side local NLP processor
+      try {
+        const result = await processUserQuery(textToSend);
         setIsTyping(false);
         const botMsg: Message = {
           id: `kala-${Date.now()}`,
@@ -180,9 +215,9 @@ export default function KalaChatDrawer({ isOpen, onClose, onOpenProductModal }: 
         if (result.showLead) {
           setLeadFormState(prev => ({ ...prev, show: true }));
         }
-      }, 700);
-    } catch (e) {
-      setIsTyping(false);
+      } catch (fallbackErr) {
+        setIsTyping(false);
+      }
     }
   };
 

@@ -23,7 +23,6 @@ export const supabaseClient = {
     
     // An 'sbp_' token is a Supabase Personal Access Token, not the project anon JWT
     if (key && key.startsWith("sbp_")) {
-      console.warn("Notice: The configured key starts with 'sbp_', which is a Supabase Personal Access Token. The web app requires your project's 'anon public' key (starts with 'eyJ'). Falling back to local store until updated.");
       return false;
     }
 
@@ -35,6 +34,96 @@ export const supabaseClient = {
     );
   },
 
+  getConnectionStatus(): {
+    configured: boolean;
+    provider: "supabase" | "local_fallback";
+    url: string | null;
+    message: string;
+  } {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || null;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || null;
+
+    if (this.isConfigured()) {
+      return {
+        configured: true,
+        provider: "supabase",
+        url,
+        message: "Connected to live Supabase PostgreSQL database."
+      };
+    }
+
+    if (key && key.startsWith("sbp_")) {
+      return {
+        configured: false,
+        provider: "local_fallback",
+        url,
+        message: "Supabase Personal Access Token ('sbp_...') detected. The web client requires the 'anon public' key (starts with 'eyJ...'). Running in resilient local catalog mode."
+      };
+    }
+
+    return {
+      configured: false,
+      provider: "local_fallback",
+      url,
+      message: "Supabase credentials not yet configured. Operating on built-in Andhra crafts catalog & resilient storage."
+    };
+  },
+
+  /**
+   * Fetch all products from Supabase if configured, otherwise fallback to local catalog
+   */
+  async getProducts(): Promise<Product[]> {
+    if (this.isConfigured()) {
+      try {
+        const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+        const res = await fetch(`${url}/rest/v1/products?select=*`, {
+          headers: {
+            'apikey': key!,
+            'Authorization': `Bearer ${key!}`
+          },
+          next: { revalidate: 60 }
+        });
+
+        if (res.ok) {
+          const dbProducts = await res.json();
+          if (Array.isArray(dbProducts) && dbProducts.length > 0) {
+            return dbProducts.map((p: any): Product => ({
+              id: p.id || p.title.toLowerCase().replace(/\s+/g, '-'),
+              title: p.title,
+              title_telugu: p.title_telugu || p.title,
+              category: p.category || 'home_decor',
+              category_name: p.category_name || (p.category ? p.category.replace(/_/g, ' ') : "Artisan Crafts"),
+              description: p.description || "",
+              price: Number(p.price) || 0,
+              dimensions: p.dimensions || "Standard Dimensions",
+              weight_grams: Number(p.weight_grams) || 500,
+              material: p.material || "Brass / Wood",
+              craft_origin: p.craft_origin || "Andhra Pradesh, India",
+              technique: p.technique || "Traditional Handcrafted Artisan Guild",
+              gi_tagged: Boolean(p.gi_tagged),
+              is_featured: Boolean(p.is_featured),
+              stock_quantity: Number(p.stock_quantity) || 1,
+              care_instructions: p.care_instructions || "Wipe gently with a soft dry cloth. Avoid harsh chemicals.",
+              occasions: Array.isArray(p.occasions) ? p.occasions : ["Pooja", "Gifting", "Housewarming"],
+              image_urls: Array.isArray(p.image_urls) && p.image_urls.length > 0 
+                ? p.image_urls 
+                : [p.image_url || "/images/brass_balaji.jpg"],
+              badge: p.badge || undefined
+            }));
+          }
+        }
+      } catch (err) {
+        console.warn("Supabase products fetch failed, using local catalog fallback:", err);
+      }
+    }
+
+    return PRODUCTS;
+  },
+
+  /**
+   * Insert customer inquiry into Supabase or fallback store
+   */
   async insertInquiry(inquiry: InquiryRecord): Promise<{ success: boolean; data?: InquiryRecord; error?: string }> {
     const record: InquiryRecord = {
       ...inquiry,
@@ -82,9 +171,13 @@ export const supabaseClient = {
     return { success: true, data: record };
   },
 
+  /**
+   * Search products across catalog
+   */
   async searchProducts(query: string, category?: string): Promise<Product[]> {
+    const all = await this.getProducts();
     const q = query.toLowerCase().trim();
-    return PRODUCTS.filter(p => {
+    return all.filter(p => {
       const matchesCategory = !category || category === 'all' || p.category === category;
       if (!matchesCategory) return false;
       if (!q) return true;
